@@ -1,7 +1,7 @@
 <template>
   <v-layout wrap justify-center align-content-center text-center>
     <v-flex xs12>
-      <v-card>
+      <v-card class="mx-auto">
         <v-card-title>Vendre une boisson</v-card-title>
         <v-card-actions>
           <v-btn>
