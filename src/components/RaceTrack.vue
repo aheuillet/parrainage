@@ -2,7 +2,10 @@
   <v-container>
     <v-layout text-center wrap>
         <div class="track">
-          <div class="test-square"></div>
+          <div class="test-square first" style="background: purple;"></div>
+          <div class="test-square second" style="background: yellow;"></div>
+          <div class="test-square third" style="background: green;"></div>
+          <div class="test-square fourth" style="background: red;"></div>
           <svg
             xmlns:dc="http://purl.org/dc/elements/1.1/"
             xmlns:cc="http://creativecommons.org/ns#"
@@ -68,25 +71,42 @@
 export default {
   name: "raceTrack",
   data: () => ({}),
-  mounted() {
-    const path = this.$anime.path(".track path");
-    const targets = ".test-square";
-    this.$anime({
+  methods: {
+    moveOne: function(targets) {
+      const path = this.$anime.path(".track path");
+      return this.$anime({
       targets,
       translateX: path("x"),
       translateY: path("y"),
       rotate: path("angle"),
       easing: "linear",
-      duration: 3000,
+      duration: 3500,
+      autoplay: false,
       loop: true
     });
+    }
+  },
+  mounted() {
+    var first = this.moveOne(".first");
+    var second = this.moveOne(".second");
+    var third = this.moveOne(".third");
+    var fourth = this.moveOne(".fourth");
+    first.play();
+    setTimeout(function () {
+      second.play();
+    }, 500);
+    setTimeout(function () {
+      third.play();
+    }, 1000);
+    setTimeout(function () {
+      fourth.play();
+    }, 1500);
   }
 };
 </script>
 
 <style>
 .test-square {
-  background: purple;
   margin: 1px;
   width: 18px;
   height: 18px;
