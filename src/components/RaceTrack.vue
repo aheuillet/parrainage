@@ -2,10 +2,10 @@
   <v-container>
     <v-layout text-center wrap>
         <div class="track">
-          <div class="test-square first" style="background: purple;"></div>
-          <div class="test-square second" style="background: yellow;"></div>
-          <div class="test-square third" style="background: green;"></div>
-          <div class="test-square fourth" style="background: red;"></div>
+          <div class="test-square info" ref="info" style="background: purple;"></div>
+          <div class="test-square elec" ref="elec" style="background: yellow;"></div>
+          <div class="test-square telecom" ref="telecom" style="background: green;"></div>
+          <div class="test-square matmeca" ref="matmeca" style="background: red;"></div>
           <svg
             xmlns:dc="http://purl.org/dc/elements/1.1/"
             xmlns:cc="http://creativecommons.org/ns#"
@@ -68,30 +68,49 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 export default {
   name: "raceTrack",
-  data: () => ({}),
+  data: () => ({
+    racers: {}
+  }),
   methods: {
-    moveOne: function(targets) {
+    initAnim: function(targets) {
       const path = this.$anime.path(".track path");
-      return this.$anime({
-      targets,
-      translateX: path("x"),
-      translateY: path("y"),
-      rotate: path("angle"),
-      easing: "linear",
-      duration: 3500,
-      autoplay: false,
-      loop: true
-    });
+      var score = 0;
+      var progress = 0;
+      var anim = this.$anime({
+        targets,
+        translateX: path("x"),
+        translateY: path("y"),
+        rotate: path("angle"),
+        easing: "linear",
+        // eslint-disable-next-line
+        loopCompleted: function (anim) {
+          this.racers[targets].score++;
+        },
+        update: function (anim) {
+          this.racers[targets].progress = anim.progress;
+        },
+        duration: 3500,
+        autoplay: false,
+        loop: true
+     });
+     return {score:score, anim:anim, progress:progress};
+    },
+    moveOneUnit: function (targets) {
+      this.racers[targets].play();
+      setTimeout(function () {
+        this.racers[targets].pause();
+      }, 1000);
     }
   },
   mounted() {
-    var first = this.moveOne(".first");
-    var second = this.moveOne(".second");
-    var third = this.moveOne(".third");
-    var fourth = this.moveOne(".fourth");
-    first.play();
+    this.racers["info"] = this.initAnim(".info");
+    this.racers["elec"] = this.initAnim(".elec");
+    this.racers["telecom"] = this.initAnim(".telecom");
+    this.racers["matmeca"] = this.initAnim(".matmeca");
+    /* first.play();
     setTimeout(function () {
       second.play();
     }, 500);
@@ -100,7 +119,8 @@ export default {
     }, 1000);
     setTimeout(function () {
       fourth.play();
-    }, 1500);
+    }, 1500); */
+
   }
 };
 </script>
