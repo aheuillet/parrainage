@@ -12,12 +12,5 @@ var firebaseConfig = {
     appId: "1:569432316859:web:fe792447bea2b127"
   };
   
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
   // Get a reference to the database service
-  var database = firebase.database();
-
-  export {
-      database
-  }
+  export const db = firebase.initializeApp(firebaseConfig).database();

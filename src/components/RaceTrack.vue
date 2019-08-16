@@ -69,59 +69,83 @@
 
 <script>
 import { setTimeout } from 'timers';
+import { db } from '../firebaseConfig';
 export default {
   name: "raceTrack",
   data: () => ({
-    racers: {}
+    anims: [],
+    racers: [],
+    anim_duration: 4000,
+    unit_move_duration: 1000
   }),
+  firebase: {
+    racers: db.ref("racers")
+  },
+  computed: {
+    info_score: function() {
+      return this.racers["info"].score;
+    },
+    elec_score: function() {
+      return this.racers["elec"].score;
+    },
+    telecom_score: function() {
+      return this.racers["telecom"].score;
+    },
+    matmeca_score: function() {
+      return this.racers["matmeca"].score;
+    },
+    ensegid_score: function() {
+      return this.racers["ensegid"].score;
+    }
+  },
+  watch: {
+    info_score: function() {
+      this.moveOneUnit("info");
+    },
+    elec_score: function() {
+      this.moveOneUnit("elec");
+    },
+    telecom_score: function() {
+      this.moveOneUnit("telecom");
+    },
+    matmeca_score: function() {
+      this.moveOneUnit("matmeca");
+    },
+    ensegid_score: function() {
+      this.moveOneUnit("ensegid");
+    },
+  },
   methods: {
     initAnim: function(targets) {
       const path = this.$anime.path(".track path");
-      var score = 0;
-      var progress = 0;
       var anim = this.$anime({
-        targets,
+        targets: ".".concat(targets),
         translateX: path("x"),
         translateY: path("y"),
         rotate: path("angle"),
         easing: "linear",
-        // eslint-disable-next-line
-        loopCompleted: function (anim) {
-          this.racers[targets].score++;
-        },
-        update: function (anim) {
-          this.racers[targets].progress = anim.progress;
-        },
-        duration: 3500,
+        duration: this.anim_duration,
         autoplay: false,
         loop: true
      });
-     return {score:score, anim:anim, progress:progress};
+     var lap_number = (this.racers[targets].score * this.unit_move_duration)/this.duration;
+     var timestamp = Math.round(this.duration*(lap_number - Math.floor(lap_number)));
+     anim.seek(timestamp);
+     return anim;
     },
     moveOneUnit: function (targets) {
-      this.racers[targets].play();
+      this.anims[targets].play();
       setTimeout(function () {
-        this.racers[targets].pause();
-      }, 1000);
+        this.anims[targets].pause();
+      }, this.unit_move_duration);
     }
   },
   mounted() {
-    this.racers["info"] = this.initAnim(".info");
-    this.racers["elec"] = this.initAnim(".elec");
-    this.racers["telecom"] = this.initAnim(".telecom");
-    this.racers["matmeca"] = this.initAnim(".matmeca");
-    /* first.play();
-    setTimeout(function () {
-      second.play();
-    }, 500);
-    setTimeout(function () {
-      third.play();
-    }, 1000);
-    setTimeout(function () {
-      fourth.play();
-    }, 1500); */
-
-  }
+    this.anims["info"] = this.initAnim(".info");
+    this.anims["elec"] = this.initAnim(".elec");
+    this.anims["telecom"] = this.initAnim(".telecom");
+    this.anims["matmeca"] = this.initAnim(".matmeca");
+  },
 };
 </script>
 
