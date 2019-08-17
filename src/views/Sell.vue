@@ -1,44 +1,145 @@
 <template>
-  <v-layout wrap justify-center align-content-center text-center>
+  <v-layout wrap justify-center text-center>
     <v-flex xs12>
-      <v-card class="mx-auto">
-        <v-card-title>Vendre une boisson</v-card-title>
-        <v-card-actions>
-          <v-btn @click="sellOne('info')">
-            <v-icon>mdi-laptop</v-icon>Info
-          </v-btn>
-          <v-btn @click="sellOne('elec')">
-            <v-icon>mdi-bug</v-icon>Elec
-          </v-btn>
-          <v-btn @click="sellOne('telecom')">
-            <v-icon>mdi-wifi</v-icon>Télécom
-          </v-btn>
-          <v-btn @click="sellOne('matmeca')">
-            <v-icon>mdi-android-studio</v-icon>Matméca
-          </v-btn>
-          <v-btn @click="sellOne('ensegid')">
-            <v-icon>mdi-terrain</v-icon>Ensegid
-          </v-btn>
-        </v-card-actions>
+      <v-card class="mx-auto mb-3" yellow>
+        <v-card-title red>Vendre une boisson</v-card-title>
       </v-card>
     </v-flex>
+    <v-flex xs12>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="blue accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-laptop</v-icon>
+      </v-avatar>
+        Filière info
+      <template v-slot:actions>
+        <v-btn @click="startSell('info')" text color="blue accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="amber accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-bug</v-icon>
+      </v-avatar>
+        Filière élec
+      <template v-slot:actions>
+        <v-btn @click="startSell('elec')" text color="amber accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="deep-purple accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-wifi</v-icon>
+      </v-avatar>
+        Filière télécom
+      <template v-slot:actions>
+        <v-btn @click="startSell('telecom')" text color="deep-purple accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="red accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-android-studio</v-icon>
+      </v-avatar>
+        Filière matméca
+      <template v-slot:actions>
+        <v-btn @click="startSell('matmeca')" text color="red accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="lime accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-cellphone-wireless</v-icon>
+      </v-avatar>
+        Filière SEE
+      <template v-slot:actions>
+        <v-btn @click="startSell('see')" text color="lime accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="blue-grey accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-lan-connect</v-icon>
+      </v-avatar>
+        Filière RSI
+      <template v-slot:actions>
+        <v-btn @click="startSell('rsi')" text color="blue-grey accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    <v-banner two-line>
+      <v-avatar slot="icon" color="green accent-4" size="40">
+        <v-icon icon="mdi-lock" color="white">mdi-terrain</v-icon>
+      </v-avatar>
+        Ensegid
+      <template v-slot:actions>
+        <v-btn @click="startSell('ensegid')" text color="green accent-4">Vendre</v-btn>
+      </template>
+    </v-banner>
+    </v-flex>
+    <v-bottom-sheet v-model="sheet" persistent>
+      <v-sheet class="text-center" height="150px">
+        <div class="py-3"><strong>Confirmer la vente ?</strong></div>
+         <v-btn
+          class="mt-6"
+          text
+          color="red"
+          @click="abortSell()"
+        >Annuler</v-btn>
+        <v-btn
+          class="mt-6"
+          text
+          color="green"
+          @click="confirmSell()"
+        >Confirmer</v-btn>
+      </v-sheet>
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
 <script>
-import { db } from '../firebaseConfig';
+import { db } from "../firebaseConfig";
 export default {
-  name: 'sell',
+  name: "sell",
   data: () => ({
-    racers: []
+    racers: {},
+    selected: null,
+    sheet: false
   }),
+  computed: {
+    greaterPopSize: function() {
+      var max = 1;
+      for (var racerName in this.racers) {
+        // eslint-disable-next-line
+        console.log(racerName);
+        const racer = this.racers[racerName];
+        if (racer.size > max) {
+          max = racer.size;
+        }
+      }
+      return max;
+    }
+  },
   firebase: {
     racers: db.ref("racers")
   },
   methods: {
-    sellOne: function (target) {
-      this.racers[target].score++;
+    sellOne: function(target) {
+      this.racers[target].score +=
+        this.greaterPopSize / this.racers[target].size;
+      db.ref('racers/' + target).set({
+        size: this.racers[target].size,
+        score: this.racers[target].score
+      });
+    },
+    confirmSell: function() {
+      if (this.selected != null) {
+        this.sellOne(this.selected);
+        this.sheet = false;
+        this.selected = null;
+      }
+    },
+    startSell: function(target) {
+      this.selected = target;
+      this.sheet = true;
+    },
+    abortSell: function() {
+      this.sheet = false;
+      this.selected = null;
     }
   }
-}
+};
 </script>
