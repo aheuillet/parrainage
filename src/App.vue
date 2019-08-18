@@ -9,7 +9,7 @@
       <v-btn to="/sell" icon>
         <v-icon>mdi-currency-eur</v-icon>
       </v-btn>
-      <v-btn icon>
+      <v-btn to="/settings" icon>
         <v-icon>mdi-settings</v-icon>
       </v-btn>
     </v-app-bar>

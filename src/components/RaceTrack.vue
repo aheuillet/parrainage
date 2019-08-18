@@ -71,15 +71,16 @@
 </template>
 
 <script>
-import { setTimeout } from "timers";
 import { db } from "../firebaseConfig";
+import { setTimeout } from 'timers';
 export default {
   name: "raceTrack",
   data: () => ({
     anims: [],
     racers: {},
-    anim_duration: 4000,
-    unit_move_duration: 1000
+    racer_order: {},
+    anim_duration: 5000,
+    loop_spacer_unit: 0.07,
   }),
   computed: {
     info_score: function() {
@@ -111,27 +112,14 @@ export default {
         targets: ".".concat(target),
         translateX: path("x"),
         translateY: path("y"),
+        translateZ: 0,
         rotate: path("angle"),
         easing: "linear",
         duration: this.anim_duration,
-        autoplay: false,
+        autoplay: true,
         loop: true
       });
-      var lap_number =
-        (this.racers[target].score * this.unit_move_duration) / this.anim_duration;
-      var timestamp = Math.round(
-        this.anim_duration * (lap_number - Math.floor(lap_number))
-      );
-      anim.seek(timestamp);
       return anim;
-    },
-    moveOneUnit: function(targets) {
-      // eslint-disable-next-line
-      console.log(targets);
-      this.anims[targets].play();
-      setTimeout(() => {
-        this.anims[targets].pause();
-      }, this.unit_move_duration);
     },
     initTrack: function() {
       this.anims["info"] = this.initAnim("info");
@@ -141,18 +129,56 @@ export default {
       this.anims["ensegid"] = this.initAnim("ensegid");
       this.anims["see"] = this.initAnim("see");
       this.anims["rsi"] = this.initAnim("rsi");
-      for (let racerName in this.racers) {
-        this.$watch('racers'+'.'+racerName+'.score', function () {
-          this.moveOneUnit(racerName);
-        });
+    },
+    normalizeProgress: function(value) {
+      if (value > this.anim_duration) {
+        return value - this.anim_duration;
       }
-    }
+      else if (value < 0 ) {
+        return value + this.anim_duration;
+      }
+      return value;
+    },
+    recomputeOrder: function() {
+      const spacer_timestamp = this.loop_spacer_unit * this.anim_duration;
+      var sortable = [];
+      for (let racerName in this.racers) {
+        sortable.push([racerName, this.racers[racerName].score]);
+      }
+      sortable.sort(function(a, b) {
+        return a[1] - b[1];
+      });
+      for (let index = 0; index < sortable.length; index++) {
+        const racer = sortable[index];
+        if (racer[0] in this.racer_order) {
+          const rank_diff = index - this.racer_order[racer[0]];
+          if (rank_diff != 0) {
+            this.anims[racer[0]].pause();
+            this.anims[racer[0]].seek(this.normalizeProgress((this.anims[racer[0]].progress * 0.01 * this.anim_duration) +
+              (rank_diff * spacer_timestamp)));
+            this.anims[racer[0]].play();
+          }
+        } else {
+          this.anims[racer[0]].pause();
+          this.anims[racer[0]].seek(index * spacer_timestamp);
+          this.anims[racer[0]].play();
+        }
+        this.racer_order[racer[0]] = index;
+      }
+      setTimeout(this.recomputeOrder, 5000);
+    },
   },
   mounted() {
     this.$rtdbBind("racers", db.ref("racers"))
       // eslint-disable-next-line
       .then(doc => {
         this.initTrack();
+        this.recomputeOrder();
+        /* this.$watch(
+          "racers",
+          this.recomputeOrder,
+          { deep: true }
+        );  */
       })
       .catch(error => {
         // eslint-disable-next-line
