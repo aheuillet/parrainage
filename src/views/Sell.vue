@@ -96,6 +96,7 @@ export default {
   name: "sell",
   data: () => ({
     racers: {},
+    settings: {},
     selected: null,
     sheet: false
   }),
@@ -114,6 +115,7 @@ export default {
     }
   },
   firebase: {
+    settings: db.ref("settings"),
     racers: db.ref("racers")
   },
   methods: {
@@ -133,8 +135,12 @@ export default {
       }
     },
     startSell: function(target) {
-      this.selected = target;
-      this.sheet = true;
+      if (this.settings.sell_confirm) {
+        this.selected = target;
+        this.sheet = true;
+      } else {
+        this.sellOne(target);
+      }
     },
     abortSell: function() {
       this.sheet = false;

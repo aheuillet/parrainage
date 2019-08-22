@@ -72,15 +72,16 @@
 
 <script>
 import { db } from "../firebaseConfig";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   name: "raceTrack",
   data: () => ({
     anims: [],
     racers: {},
+    settings: {},
     racer_order: {},
     anim_duration: 5000,
-    loop_spacer_unit: 0.07,
+    loop_spacer_unit: 0.07
   }),
   computed: {
     info_score: function() {
@@ -133,8 +134,7 @@ export default {
     normalizeProgress: function(value) {
       if (value > this.anim_duration) {
         return value - this.anim_duration;
-      }
-      else if (value < 0 ) {
+      } else if (value < 0) {
         return value + this.anim_duration;
       }
       return value;
@@ -154,8 +154,12 @@ export default {
           const rank_diff = index - this.racer_order[racer[0]];
           if (rank_diff != 0) {
             this.anims[racer[0]].pause();
-            this.anims[racer[0]].seek(this.normalizeProgress((this.anims[racer[0]].progress * 0.01 * this.anim_duration) +
-              (rank_diff * spacer_timestamp)));
+            this.anims[racer[0]].seek(
+              this.normalizeProgress(
+                this.anims[racer[0]].progress * 0.01 * this.anim_duration +
+                  rank_diff * spacer_timestamp
+              )
+            );
             this.anims[racer[0]].play();
           }
         } else {
@@ -165,24 +169,28 @@ export default {
         }
         this.racer_order[racer[0]] = index;
       }
-      setTimeout(this.recomputeOrder, 5000);
-    },
+      setTimeout(this.recomputeOrder, this.settings.refresh_rate);
+    }
   },
   mounted() {
-    this.$rtdbBind("racers", db.ref("racers"))
+    this.$rtdbBind("settings", db.ref("settings"))
       // eslint-disable-next-line
-      .then(doc => {
-        this.initTrack();
-        this.recomputeOrder();
-        /* this.$watch(
+      .then(doc1 => {
+        this.$rtdbBind("racers", db.ref("racers"))
+          // eslint-disable-next-line
+          .then(doc => {
+            this.initTrack();
+            this.recomputeOrder();
+            /* this.$watch(
           "racers",
           this.recomputeOrder,
           { deep: true }
         );  */
-      })
-      .catch(error => {
-        // eslint-disable-next-line
-        console.log("error in loading: ", error);
+          })
+          .catch(error => {
+            // eslint-disable-next-line
+            console.log("error in loading: ", error);
+          });
       });
   }
 };
