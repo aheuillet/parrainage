@@ -104,8 +104,6 @@ export default {
     greaterPopSize: function() {
       var max = 1;
       for (var racerName in this.racers) {
-        // eslint-disable-next-line
-        console.log(racerName);
         const racer = this.racers[racerName];
         if (racer.size > max) {
           max = racer.size;

@@ -66,6 +66,22 @@
           </g>
         </svg>
       </div>
+      <v-row>
+        <v-col v-for="racer in racers" :key="racer.score" cols="12" sm="6" md="4" lg="3">
+          <v-card>
+            <v-card-title>
+              <h4>{{ racer.name }}</h4>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item>
+                <v-list-item-content>Score:</v-list-item-content>
+                <v-list-item-content class="align-end">{{ racer.score }}</v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-layout>
   </v-container>
 </template>
