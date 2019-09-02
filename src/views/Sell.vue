@@ -120,10 +120,7 @@ export default {
     sellOne: function(target) {
       this.racers[target].score +=
         this.greaterPopSize / this.racers[target].size;
-      db.ref('racers/' + target).set({
-        size: this.racers[target].size,
-        score: this.racers[target].score
-      });
+      db.ref('racers/' + target + "/score").set(Math.round(this.racers[target].score));
     },
     confirmSell: function() {
       if (this.selected != null) {
