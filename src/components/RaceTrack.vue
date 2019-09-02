@@ -71,7 +71,7 @@
         </v-col>
         <v-col cols="4" class="d-flex flex-row flex-wrap justify-space-around align-start">
           <v-card v-for="racer in racers" :key="racer.name" style="width: 200px;">
-            <v-card-title>
+            <v-card-title class="blue white--text">
               <h5>{{ racer.name }}</h5>
             </v-card-title>
             <v-divider></v-divider>
