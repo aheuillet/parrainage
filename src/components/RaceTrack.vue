@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout text-center wrap>
-      <v-row justify="space-around">
+      <v-row justify="space-around" align="start">
         <v-col cols="4">
           <div class="track">
             <div class="test-square info" ref="info" style="background: blue;"></div>
@@ -70,7 +70,7 @@
           </div>
         </v-col>
         <v-col cols="4" class="d-flex flex-row flex-wrap justify-space-around align-start">
-          <v-card v-for="racer in racers" :key="racer.name" style="width: 200px;">
+          <v-card v-for="racer in racers" :key="racer.name" class="mb-3" style="width: 200px;">
             <v-card-title class="blue white--text">
               <h5>{{ racer.name }}</h5>
             </v-card-title>
