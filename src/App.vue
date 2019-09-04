@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="cyan" dark app>
+    <v-app-bar color="blue" dark app>
       <v-toolbar-title>Soirée parrainage 2019</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn to="/" icon>

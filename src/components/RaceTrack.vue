@@ -69,19 +69,25 @@
             </svg>
           </div>
         </v-col>
-        <v-col cols="4" class="d-flex flex-row flex-wrap justify-space-around align-start">
-          <v-card v-for="racer in racers" :key="racer.name" class="mb-3" style="width: 200px;">
-            <v-card-title class="blue white--text">
-              <h5>{{ racer.name }}</h5>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-list dense>
-              <v-list-item>
-                <v-list-item-content>Score:</v-list-item-content>
-                <v-list-item-content class="align-end">{{ racer.score }}</v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
+        <v-col cols="4" class="d-flex flex-row flex-wrap justify-space-around align-start" style="margin-top: -15px;">
+          <transition-group name="scores" tag="div">
+            <v-card
+              v-for="racer in sorted_racers"
+              :key="racer.name"
+              class="score-card"
+            >
+              <v-card-title class="blue white--text">
+                <h5>{{ racer.name }}</h5>
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-list dense>
+                <v-list-item>
+                  <v-list-item-content>Score:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ racer.score }}</v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </transition-group>
         </v-col>
       </v-row>
     </v-layout>
@@ -91,6 +97,7 @@
 <script>
 import { db } from "../firebaseConfig";
 import { setTimeout } from "timers";
+var _ = require('lodash');
 export default {
   name: "raceTrack",
   data: () => ({
@@ -122,6 +129,9 @@ export default {
     },
     rsi_score: function() {
       return this.racers["rsi"].score;
+    },
+    sorted_racers: function() {
+      return _.orderBy(this.racers, 'score', 'desc');
     }
   },
   methods: {
@@ -161,7 +171,10 @@ export default {
       const spacer_timestamp = this.loop_spacer_unit * this.anim_duration;
       var sortable = [];
       for (let racerName in this.racers) {
-        sortable.push([racerName, this.racers[racerName].score]);
+        sortable.push([
+          racerName,
+          this.racers[racerName].score
+        ]);
       }
       sortable.sort(function(a, b) {
         return a[1] - b[1];
@@ -229,5 +242,15 @@ export default {
   margin: auto;
   display: float;
   float: inherit;
+}
+
+.score-card {
+  width: 200px;
+  transform: scale(0.8);
+  margin-bottom: -10px;
+}
+
+.scores-move {
+  transition: transform 1s;
 }
 </style>

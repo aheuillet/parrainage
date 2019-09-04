@@ -1,8 +1,8 @@
 <template>
   <v-layout wrap justify-center text-center>
     <v-flex xs12>
-      <v-card class="mx-auto mb-3" yellow>
-        <v-card-title red>Vendre une boisson</v-card-title>
+      <v-card class="mx-auto mb-3">
+        <v-card-title>Vendre une boisson</v-card-title>
       </v-card>
     </v-flex>
     <v-flex xs12>
