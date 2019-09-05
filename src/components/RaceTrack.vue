@@ -184,23 +184,33 @@ export default {
         if (racer[0] in this.racer_order) {
           const rank_diff = index - this.racer_order[racer[0]];
           if (rank_diff != 0) {
-            this.anims[racer[0]].pause();
+            this.pauseAllAnims();
             this.anims[racer[0]].seek(
               this.normalizeProgress(
                 this.anims[racer[0]].progress * 0.01 * this.anim_duration +
                   rank_diff * spacer_timestamp
               )
             );
-            this.anims[racer[0]].play();
+            this.playAllAnims();
           }
         } else {
-          this.anims[racer[0]].pause();
+          this.pauseAllAnims();
           this.anims[racer[0]].seek(index * spacer_timestamp);
-          this.anims[racer[0]].play();
+          this.playAllAnims();
         }
         this.racer_order[racer[0]] = index;
       }
       setTimeout(this.recomputeOrder, this.settings.refresh_rate);
+    },
+    pauseAllAnims: function() {
+      for (var anim in this.anims) {
+        this.anims[anim].pause();
+      }
+    },
+    playAllAnims: function() {
+      for (var anim in this.anims) {
+        this.anims[anim].play();
+      }
     }
   },
   mounted() {
