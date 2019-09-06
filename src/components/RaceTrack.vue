@@ -69,13 +69,13 @@
             </svg>
           </div>
         </v-col>
-        <v-col cols="4" class="d-flex flex-row flex-wrap justify-space-around align-start" style="margin-top: -15px;">
+        <v-col
+          cols="4"
+          class="d-flex flex-row flex-wrap justify-space-around align-start"
+          style="margin-top: -15px;"
+        >
           <transition-group name="scores" tag="div">
-            <v-card
-              v-for="racer in sorted_racers"
-              :key="racer.name"
-              class="score-card"
-            >
+            <v-card v-for="racer in sorted_racers" :key="racer.name" class="score-card">
               <v-card-title class="blue white--text">
                 <h5>{{ racer.name }}</h5>
               </v-card-title>
@@ -150,6 +150,9 @@ export default {
       });
       return anim;
     },
+    sleep: function(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
     initTrack: function() {
       this.anims["info"] = this.initAnim("info");
       this.anims["elec"] = this.initAnim("elec");
@@ -165,9 +168,9 @@ export default {
       } else if (value < 0) {
         return value + this.anim_duration;
       }
-      return value;
+      return Math.round(value);
     },
-    recomputeOrder: function() {
+    recomputeOrder: async function() {
       const spacer_timestamp = this.loop_spacer_unit * this.anim_duration;
       var sortable = [];
       for (let racerName in this.racers) {
@@ -185,6 +188,7 @@ export default {
           const rank_diff = index - this.racer_order[racer[0]];
           if (rank_diff != 0) {
             this.pauseAllAnims();
+            await this.sleep(50);
             this.anims[racer[0]].seek(
               this.normalizeProgress(
                 this.anims[racer[0]].progress * 0.01 * this.anim_duration +
@@ -194,9 +198,10 @@ export default {
             this.playAllAnims();
           }
         } else {
-          this.pauseAllAnims();
+          this.anims[racer[0]].pause();
+          await this.sleep(1);
           this.anims[racer[0]].seek(index * spacer_timestamp);
-          this.playAllAnims();
+          this.anims[racer[0]].play();
         }
         this.racer_order[racer[0]] = index;
       }
