@@ -4,13 +4,13 @@
       <v-row justify="space-around" align="start">
         <v-col cols="4">
           <div class="track">
-            <div class="test-square info" ref="info" style="background: blue;"></div>
-            <div class="test-square elec" ref="elec" style="background: orange;"></div>
-            <div class="test-square telecom" ref="telecom" style="background: purple;"></div>
-            <div class="test-square matmeca" ref="matmeca" style="background: red;"></div>
-            <div class="test-square ensegid" ref="ensegid" style="background: green;"></div>
-            <div class="test-square rsi" ref="rsi" style="background: grey;"></div>
-            <div class="test-square see" ref="see" style="background: yellow;"></div>
+            <img src="../assets/mini_luigi.png" class="test-square infor" ref="infor"/>
+            <img src="../assets/mini_toad.png" class="test-square elec" ref="elec"/>
+            <img src="../assets/mini_wario.png" class="test-square telecom" ref="telecom"/>
+            <img src="../assets/mini_mario.png" class="test-square matmeca" ref="matmeca"/>
+            <img src="../assets/mini_bowser.png" class="test-square ensegid" ref="ensegid"/>
+            <img src="../assets/mini_waluigi.png" class="test-square rsi" ref="rsi"/>
+            <img src="../assets/mini_peach.png" class="test-square see" ref="see"/>
             <svg
               xmlns:dc="http://purl.org/dc/elements/1.1/"
               xmlns:cc="http://creativecommons.org/ns#"
@@ -76,8 +76,9 @@
         >
           <transition-group name="scores" tag="div">
             <v-card v-for="racer in sorted_racers" :key="racer.name" class="score-card">
-              <v-card-title class="blue white--text">
+              <v-card-title class="blue white--text d-flex flex-row justify-space-between flex-wrap align-start">
                 <h5>{{ racer.name }}</h5>
+                <img :src="getScoreImg(racer.mascot)" class="score-img"/>
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>
@@ -154,7 +155,7 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     initTrack: function() {
-      this.anims["info"] = this.initAnim("info");
+      this.anims["info"] = this.initAnim("infor");
       this.anims["elec"] = this.initAnim("elec");
       this.anims["telecom"] = this.initAnim("telecom");
       this.anims["matmeca"] = this.initAnim("matmeca");
@@ -216,6 +217,10 @@ export default {
       for (var anim in this.anims) {
         this.anims[anim].play();
       }
+    },
+    getScoreImg: function(name) {
+      var images = require.context('../assets/', false, /\.png$/);
+      return images('./' + name + '-icon.png');
     }
   },
   mounted() {
@@ -245,8 +250,8 @@ export default {
 <style>
 .test-square {
   margin: 1px;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   position: absolute;
   top: -9px;
   left: 55px;
@@ -260,9 +265,14 @@ export default {
 }
 
 .score-card {
-  width: 200px;
+  width: 250px;
   transform: scale(0.8);
   margin-bottom: -10px;
+}
+
+.score-img {
+  width: 80px;
+  height: 80px;
 }
 
 .scores-move {
