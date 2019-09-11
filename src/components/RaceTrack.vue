@@ -17,10 +17,10 @@
         <v-col
           cols="4"
           class="d-flex flex-row flex-wrap justify-space-around align-start"
-          style="margin-top: -35px;"
+          style="margin-top: -45px;"
         >
           <transition-group name="scores" tag="div">
-            <v-card v-for="racer in sorted_racers" :key="racer.name" class="score-card">
+            <v-card v-for="(racer, index) in sorted_racers" :key="racer.name" class="score-card">
               <v-card-title
                 class="white--text d-flex flex-row justify-space-between flex-wrap align-start"
                 :class="getMascotColor(racer.mascot)"
@@ -31,7 +31,10 @@
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item class="headline">
-                  <v-list-item-content>Score:</v-list-item-content>
+                  <v-list-item-avatar>
+                    <img :src="getOrderImg(index+1)" />
+                  </v-list-item-avatar>
+                  <v-list-item-content>Score :</v-list-item-content>
                   <v-list-item-content class="align-end"><strong>{{ racer.score }}</strong></v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -183,7 +186,7 @@ export default {
           return "green";
 
         case "toad":
-          return "indigo darken-1";
+          return "blue accent-4";
 
         case "mario":
           return "red darken-2";
@@ -197,6 +200,10 @@ export default {
         default:
           return "primary";
       }
+    },
+    getOrderImg: function(order) {
+      var images = require.context("../assets/", false, /\.png$/);
+      return images("./" + order + ".png");
     }
   },
   mounted() {

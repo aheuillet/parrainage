@@ -7,66 +7,66 @@
     </v-flex>
     <v-flex xs12>
     <v-banner two-line>
-      <v-avatar slot="icon" color="blue accent-4" size="40">
+      <v-avatar slot="icon" color="green" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-laptop</v-icon>
       </v-avatar>
         Filière info
       <template v-slot:actions>
-        <v-btn @click="startSell('info')" text color="blue accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('info')" text color="green">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="amber accent-4" size="40">
+      <v-avatar slot="icon" color="blue accent-4" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-bug</v-icon>
       </v-avatar>
         Filière élec
       <template v-slot:actions>
-        <v-btn @click="startSell('elec')" text color="amber accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('elec')" text color="blue accent-4">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="deep-purple accent-4" size="40">
+      <v-avatar slot="icon" color="yellow" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-wifi</v-icon>
       </v-avatar>
         Filière télécom
       <template v-slot:actions>
-        <v-btn @click="startSell('telecom')" text color="deep-purple accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('telecom')" text color="yellow">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="red accent-4" size="40">
+      <v-avatar slot="icon" color="red darken-2" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-android-studio</v-icon>
       </v-avatar>
         Filière matméca
       <template v-slot:actions>
-        <v-btn @click="startSell('matmeca')" text color="red accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('matmeca')" text color="red darken-2">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="lime accent-4" size="40">
+      <v-avatar slot="icon" color="pink lighten-3" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-cellphone-wireless</v-icon>
       </v-avatar>
         Filière SEE
       <template v-slot:actions>
-        <v-btn @click="startSell('see')" text color="lime accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('see')" text color="pink lighten-3">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="blue-grey accent-4" size="40">
+      <v-avatar slot="icon" color="deep-purple" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-lan-connect</v-icon>
       </v-avatar>
         Filière RSI
       <template v-slot:actions>
-        <v-btn @click="startSell('rsi')" text color="blue-grey accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('rsi')" text color="deep-purple">Vendre</v-btn>
       </template>
     </v-banner>
     <v-banner two-line>
-      <v-avatar slot="icon" color="green accent-4" size="40">
+      <v-avatar slot="icon" color="orange" size="40">
         <v-icon icon="mdi-lock" color="white">mdi-terrain</v-icon>
       </v-avatar>
         Ensegid
       <template v-slot:actions>
-        <v-btn @click="startSell('ensegid')" text color="green accent-4">Vendre</v-btn>
+        <v-btn @click="startSell('ensegid')" text color="orange">Vendre</v-btn>
       </template>
     </v-banner>
     </v-flex>
