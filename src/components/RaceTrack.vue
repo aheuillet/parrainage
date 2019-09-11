@@ -17,7 +17,7 @@
         <v-col
           cols="4"
           class="d-flex flex-row flex-wrap justify-space-around align-start"
-          style="margin-top: -15px;"
+          style="margin-top: -35px;"
         >
           <transition-group name="scores" tag="div">
             <v-card v-for="racer in sorted_racers" :key="racer.name" class="score-card">
@@ -242,8 +242,8 @@ export default {
 
 .score-card {
   width: 250px;
-  transform: scale(0.8);
-  margin-bottom: -10px;
+  transform: scale(0.6);
+  margin-bottom: -50px;
 }
 
 .score-img {
