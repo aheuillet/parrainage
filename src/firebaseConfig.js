@@ -1,5 +1,6 @@
 import * as firebase from "firebase/app";
 import "firebase/database";
+import "firebase/auth";
 
 // TODO: Replace the following with your app's Firebase project configuration
 var firebaseConfig = {
@@ -14,3 +15,7 @@ var firebaseConfig = {
   
   // Get a reference to the database service
   export const db = firebase.initializeApp(firebaseConfig).database();
+
+  export var fire = firebase;
+ 
+  
