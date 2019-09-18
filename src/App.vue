@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="blue" dark app>
-      <v-toolbar-title>Soirée parrainage 2019</v-toolbar-title>
+      <v-toolbar-title><strong class="maintitle">Eirb We Go</strong></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn to="/" icon>
         <v-icon>mdi-home</v-icon>
@@ -29,3 +29,15 @@
     </v-footer>
   </v-app>
 </template>
+
+<style>
+@font-face {
+  font-family: "MarioKart";
+  src: url("./assets/mario.ttf");
+}
+
+.maintitle {
+  font-family: "MarioKart", sans-serif;
+  font-size: 34px;
+}
+</style>

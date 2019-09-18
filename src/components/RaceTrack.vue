@@ -8,7 +8,6 @@
             <img src="../assets/mini_toad.png" class="test-square elec" ref="elec" />
             <img src="../assets/mini_wario.png" class="test-square telecom" ref="telecom" />
             <img src="../assets/mini_mario.png" class="test-square matmeca" ref="matmeca" />
-            <img src="../assets/mini_bowser.png" class="test-square ensegid" ref="ensegid" />
             <img src="../assets/mini_waluigi.png" class="test-square rsi" ref="rsi" />
             <img src="../assets/mini_peach.png" class="test-square see" ref="see" />
             <SVGTrack class="track" />
@@ -35,7 +34,9 @@
                     <img :src="getOrderImg(index+1)" />
                   </v-list-item-avatar>
                   <v-list-item-content>Score :</v-list-item-content>
-                  <v-list-item-content class="align-end"><strong>{{ racer.score }}</strong></v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    <strong>{{ racer.score }}</strong>
+                  </v-list-item-content>
                 </v-list-item>
               </v-list>
             </v-card>
@@ -77,9 +78,6 @@ export default {
     matmeca_score: function() {
       return this.racers["matmeca"].score;
     },
-    ensegid_score: function() {
-      return this.racers["ensegid"].score;
-    },
     see_score: function() {
       return this.racers["see"].score;
     },
@@ -114,7 +112,6 @@ export default {
       this.anims["elec"] = this.initAnim("elec");
       this.anims["telecom"] = this.initAnim("telecom");
       this.anims["matmeca"] = this.initAnim("matmeca");
-      this.anims["ensegid"] = this.initAnim("ensegid");
       this.anims["see"] = this.initAnim("see");
       this.anims["rsi"] = this.initAnim("rsi");
     },
@@ -249,8 +246,8 @@ export default {
 
 .score-card {
   width: 250px;
-  transform: scale(0.6);
-  margin-bottom: -50px;
+  transform: scale(0.8);
+  margin-bottom: -30px;
 }
 
 .score-img {

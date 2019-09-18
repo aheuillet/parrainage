@@ -60,15 +60,6 @@
         <v-btn @click="startSell('rsi')" text color="deep-purple">Vendre</v-btn>
       </template>
     </v-banner>
-    <v-banner two-line>
-      <v-avatar slot="icon" color="orange" size="40">
-        <v-icon icon="mdi-lock" color="white">mdi-terrain</v-icon>
-      </v-avatar>
-        Ensegid
-      <template v-slot:actions>
-        <v-btn @click="startSell('ensegid')" text color="orange">Vendre</v-btn>
-      </template>
-    </v-banner>
     </v-flex>
     <v-bottom-sheet v-model="sheet" persistent>
       <v-sheet class="text-center" height="150px">
