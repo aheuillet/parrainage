@@ -68,12 +68,16 @@
         <v-btn class="mt-6" text color="green" @click="confirmSell()">Confirmer</v-btn>
       </v-sheet>
     </v-bottom-sheet>
+    <v-snackbar v-model="snackbar">
+      Impossible d'enregistrer un nouvel utilisateur
+      <v-btn color="pink" text @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </v-layout>
 </template>
 
 <script>
 import { db, fire } from "../firebaseConfig";
-import * as firebaseui from 'firebaseui';
+import * as firebaseui from "firebaseui";
 export default {
   name: "sell",
   data: () => ({
@@ -81,7 +85,8 @@ export default {
     settings: {},
     selected: null,
     sheet: false,
-    dialog: true
+    dialog: true,
+    snackbar: false
   }),
   computed: {
     greaterPopSize: function() {
@@ -136,7 +141,14 @@ export default {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            _this.dialog = false;
+            if (authResult.additionalUserInfo.isNewUser) 
+            {
+              _this.snackbar = true;
+            }
+            else 
+            {
+              _this.dialog = false;
+            }
             return false;
           },
           uiShown: function() {
@@ -147,7 +159,7 @@ export default {
         },
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: "popup",
-        credentialHelper: firebaseui.auth.CredentialHelper.NONE,  
+        credentialHelper: firebaseui.auth.CredentialHelper.NONE,
         signInSuccessUrl: window.location.pathname,
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
