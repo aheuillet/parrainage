@@ -177,7 +177,7 @@ export default {
     }
   },
   mounted: function() {
-    this.launchFirebaseUI();
+    //this.launchFirebaseUI();
   }
 };
 </script>
