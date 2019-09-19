@@ -128,6 +128,7 @@ export default {
     },
     launchFirebaseUI: function() {
       var ui = new firebaseui.auth.AuthUI(fire.auth());
+      var _this = this;
       var uiConfig = {
         callbacks: {
           // eslint-disable-next-line
@@ -135,7 +136,7 @@ export default {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            this.dialog = false;
+            _this.dialog = false;
             return false;
           },
           uiShown: function() {
@@ -146,6 +147,7 @@ export default {
         },
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: "popup",
+        credentialHelper: firebaseui.auth.CredentialHelper.NONE,  
         signInSuccessUrl: window.location.pathname,
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
