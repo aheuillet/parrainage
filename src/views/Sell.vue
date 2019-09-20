@@ -1,9 +1,9 @@
 <template>
   <v-layout wrap justify-center text-center>
-    <v-dialog v-model="dialog" persistent>
+    <!-- <v-dialog v-model="dialog" persistent>
       <div id="firebaseui-auth-container"></div>
       <div id="loader">Loading...</div>
-    </v-dialog>
+    </v-dialog> -->
     <v-flex xs12>
       <v-card class="mx-auto mb-3">
         <v-card-title>Vendre une boisson</v-card-title>
@@ -85,7 +85,7 @@ export default {
     settings: {},
     selected: null,
     sheet: false,
-    dialog: true,
+    dialog: false,
     snackbar: false
   }),
   computed: {
