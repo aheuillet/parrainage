@@ -245,7 +245,7 @@ export default {
 }
 
 .score-card {
-  width: 250px;
+  width: 500px;
   transform: scale(0.8);
   margin-bottom: -30px;
 }
